@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "name": "世新問卷助手",
+  "version": "1.0",
+  "description": "The useful extension for student of Shih Hsin University to auto fill in all the SHU course questionnaire.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "64": "icons/icon64.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+  "page_action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "64": "icons/icon64.png",
+      "96": "icons/icon96.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "shu-questionnaire-autocomplete"
+  },
+  "author": "SaveYourTime",
+  "background": {
+    "scripts": [
+      "script/background.js",
+      "script/asyncTracking.js"
+    ],
+    "persistent": false
+  },
+  "permissions": ["tabs", "*://ap2.shu.edu.tw/*", "*://ap3.shu.edu.tw/*", "*://ap4.shu.edu.tw/*"],
+  "event_rules": [{
+    "event": "declarativeContent.onPageChanged",
+    "actions": [{
+      "type": "declarativeContent.ShowPageAction"
+    }],
+    "conditions": [{
+      "type": "declarativeContent.PageStateMatcher",
+      "pageUrl": {
+        "hostPrefix": "website",
+        "pathContains": "",
+        "schemes": ["http", "https"]
+      }
+    }]
+  }],
+  "content_scripts": [
+    {
+      "matches": ["*://ap2.shu.edu.tw/*", "*://ap3.shu.edu.tw/*", "*://ap4.shu.edu.tw/*"],
+      "run_at": "document_idle",
+      "js": ["script/contentScript.js"]
+    }
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+}
